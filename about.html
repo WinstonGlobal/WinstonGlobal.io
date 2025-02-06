@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Обо мне</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Навигационное меню -->
+    <nav class="cyber-menu" id="navbar">
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="menu-items">
+            <li class="menu-item neon-text"><a href="index.html">Главная</a></li>
+            <li class="menu-item neon-text">Обо мне</li>
+            <li class="menu-item neon-text"><a href="contacts.html">Контакты</a></li>
+            <li class="menu-item neon-text"><a href="game.html">Взлом терминала</a></li>
+        </ul>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="cyber-grid">
+        <section class="cyber-card about-section" onclick="this.classList.toggle('flipped')">
+    <div class="card-inner">
+        <!-- Передняя сторона (исходный вид) -->
+        <div class="card-front">
+            <h2 class="neon-text centered-title">О проекте</h2>
+            <p class="centered-text">Этот сайт посвящен киберпанку и его культуре.</p>
+            <ul class="centered-list">
+                <li>История киберпанка</li>
+                <li>Современные технологии</li>
+                <li>Футуристические идеи</li>
+            </ul>
+            <img src="https://cm.author.today/content/2023/03/23/c1e8a23ebd154fcaa0414bf91bfb9246.jpg" 
+                 alt="About Image" 
+                 style="width:100%; border-radius:10px; margin:1rem 0;">
+        </div>
+
+        <!-- Обратная сторона -->
+        <div class="card-back">
+            <h3 class="neon-text centered-title">Technical details</h3>
+            <ul class="centered-list">
+                <li>CSS 3D Transforms</li>
+                <li>Perspective API</li>
+                <li>Hardware Acceleration</li>
+                <li>Cross-browser Support</li>
+            </ul>
+            <p class="neon-text" style="margin-top: 1rem; font-size: 0.9em;">
+                Кликните для возврата
+            </p>
+        </div>
+    </div>
+</section>
+
+
+    </main>
+
+    <!--кнопка наверх -->
+    <button onclick="scrollToTop()" id="topButton">Наверх</button>
+    <canvas id="matrix"></canvas> 
+    <script>
+
+
+        // Скрытие меню при скролле
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            const st = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (st > lastScrollTop) {
+                // Прокрутка вниз
+                navbar.classList.add('hidden');
+            } else {
+                // Прокрутка вверх
+                navbar.classList.remove('hidden');
+            }
+
+            lastScrollTop = st <= 0 ? 0 : st;
+        });
+        
+        // Показываем/скрываем кнопку "Наверх" при прокрутке
+window.addEventListener('scroll', () => {
+    const topButton = document.getElementById('topButton');
+    if (window.pageYOffset > 300) {
+        topButton.style.display = 'block'; // Показываем кнопку
+    } else {
+        topButton.style.display = 'none'; // Скрываем кнопку
+    }
+});
+
+
+        // Скролл наверх
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+// matrix  
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const drops = Array(Math.floor(canvas.width / 20)).fill(0);
+
+function draw() {
+    ctx.fillStyle = 'rgba(10, 10, 18, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = '#0F0';
+    ctx.font = '18px monospace';
+
+    drops.forEach((y, i) => {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(char, i * 20, y);
+        drops[i] = y > canvas.height || Math.random() > 0.95 ? 0 : y + 20;
+    });
+}
+
+setInterval(draw, 50);
+    </script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neon Cyber Art</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <!-- Кнопка меню для мобильных устройств -->
+    <div class="menu-toggle" id="mobile-menu">
+        <span class="bar"></span>
+        <span class="bar"></span>
+        <span class="bar"></span>
+    </div>
+
+    <!-- Навигационное меню -->
+    <nav class="cyber-menu" id="navbar">
+        <ul class="menu-items">
+            <li class="menu-item neon-text"><a href="index.html">Главная</a></li>
+            <li class="menu-item neon-text"><a href="about.html">Обо мне</a></li>
+            <li class="menu-item neon-text"><a href="contacts.html">Контакты</a></li>
+            <li class="menu-item neon-text"><a href="game.html">Взлом терминала</a></li>
+            <li class="menu-item">
+                <button class="sign-in-button neon-text">Sign In</button>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Бегущая строка -->
+    <div class="cyber-ticker">
+        <div class="ticker-content">
+            <span class="neon-text">⚡ CYBERPUNK 2077 ⚡ NEON LIGHTS ⚡ VIRTUAL REALITY ⚡ TECHNO FUTURE ⚡</span>
+        </div>
+    </div>
+
+    <!-- Основной контент -->
+    <main class="cyber-grid">
+        <section class="cyber-card">
+            <h2 id="animated-title">Neon Downtown - this is the future</h2>
+            <img src="https://i.pinimg.com/originals/45/15/06/451506a3f3ad24decbc9359b3ee403e8.jpg" 
+                 alt="Neon City" 
+                 style="width:100%; border-radius:10px; margin:1rem 0;">
+            <p>Welcome to the electric heart of the metropolis</p>
+        </section>
+        <section class="cyber-card">
+            <h2 class="neon-text">Cyber Enhancements</h2>
+            <img src="https://tr.web.img4.acsta.net/pictures/14/02/05/17/01/305350.jpg" 
+                 alt="Cyber Tech" 
+                 style="width:100%; border-radius:10px; margin:1rem 0;">
+            <p>Upgrade your reality with neural implants</p>
+        </section>
+        <section class="cyber-card">
+            <h2 class="neon-text">Server Section</h2>
+            <img src="https://media.lesechos.com/api/v1/images/view/6168462f3e45461a9f050b46/1280x720/07092630843-web-tete.jpg" 
+                 alt="Another Image" 
+                 style="width:100%; border-radius:10px; margin:1rem 0;">
+            <p>This is server station COD</p>
+        </section>
+        <div class="filter-container">
+            <button onclick="filterLinks('all')" class="filter-button"><i class="fas fa-globe"></i> Все</button>
+            <button onclick="filterLinks('hack')" class="filter-button"><i class="fas fa-hackerrank"></i> Статьи о хакинге</button>
+            <button onclick="filterLinks('programming')" class="filter-button"><i class="fas fa-code"></i> О программировании</button>
+            <button onclick="filterLinks('other')" class="filter-button"><i class="fas fa-cogs"></i> Другое</button>
+        </div>
+        <div id="link-container" class="links-horizontal"></div>
+        <div class="countdown-container">
+            <h2 class="neon-text">До лета осталось:</h2>
+            <div id="countdown"></div>
+        </div>
+    </main>
+
+    <!-- Логин форма -->
+    <div class="login-overlay" id="loginOverlay">
+        <div class="login-form-container">
+            <form id="loginForm" class="styled-form login-form">
+                <label for="emailLogin">Email:</label>
+                <input type="email" id="emailLogin" required>
+                <label for="passwordLogin">Password:</label>
+                <input type="password" id="passwordLogin" required>
+                <button type="submit">Войти</button>
+                <button type="button" id="closeLoginForm">Закрыть</button>
+            </form>
+        </div>
+    </div>
+
+    <button onclick="scrollToTop()" id="topButton">Наверх</button>
+    <canvas id="matrix"></canvas>
+    <script>
+        // Навигация и скролл
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        const topButton = document.getElementById('topButton');
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const st = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (st > lastScrollTop) {
+                // Прокрутка вниз
+                navbar.classList.add('hidden');
+            } else {
+                // Прокрутка вверх
+                navbar.classList.remove('hidden');
+            }
+
+            lastScrollTop = st <= 0 ? 0 : st;
+        });
+
+// Показываем/скрываем кнопку "Наверх" при прокрутке
+window.addEventListener('scroll', () => {
+    const topButton = document.getElementById('topButton');
+    if (window.pageYOffset > 300) {
+        topButton.style.display = 'block'; // Показываем кнопку
+    } else {
+        topButton.style.display = 'none'; // Скрываем кнопку
+    }
+});
+
+// Функция для прокрутки наверх
+function scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+
+        // Открытие и закрытие бургер-меню
+       // Открытие и закрытие мобильного меню
+const mobileMenu = document.getElementById('mobile-menu');
+const menuItems = document.querySelector('.menu-items');
+
+mobileMenu.addEventListener('click', () => {
+    mobileMenu.classList.toggle('active');
+    menuItems.classList.toggle('active');
+});
+        // Побуквенный вывод заголовка
+        const titleElement = document.getElementById('animated-title');
+        let index = 0;
+        const text = titleElement.textContent;
+        titleElement.textContent = '';
+        function typeWriter() {
+            if (index < text.length) {
+                titleElement.textContent += text.charAt(index);
+                index++;
+                setTimeout(typeWriter, 100);
+            }
+        }
+        typeWriter();
+
+        // Фильтрация ссылок
+        const links = [
+            { name: 'Hack Site 1', category: 'hack', url: 'https://example.com/hack1' },
+            { name: 'Hack Site 2', category: 'hack', url: 'https://example.com/hack2' },
+            { name: 'Hack Site 3', category: 'hack', url: 'https://example.com/hack3' },
+            { name: 'Hack Site 4', category: 'hack', url: 'https://example.com/hack4' },
+            { name: 'Programming Site 1', category: 'programming', url: 'https://example.com/prog1' },
+            { name: 'Programming Site 2', category: 'programming', url: 'https://example.com/prog2' },
+            { name: 'Programming Site 3', category: 'programming', url: 'https://example.com/prog3' },
+            { name: 'Other Site 1', category: 'other', url: 'https://example.com/other1' }
+        ];
+
+        function displayLinks(linksToShow) {
+            const linkContainer = document.getElementById('link-container');
+            linkContainer.innerHTML = '';
+            linksToShow.forEach(link => {
+                const a = document.createElement('a');
+                a.href = link.url;
+                a.textContent = link.name;
+                a.className = 'neon-text';
+                linkContainer.appendChild(a);
+                linkContainer.appendChild(document.createElement('br'));
+            });
+        }
+
+        function filterLinks(category) {
+            if (category === 'all') {
+                displayLinks(links);
+            } else {
+                displayLinks(links.filter(link => link.category === category));
+            }
+        }
+
+        displayLinks(links);
+
+        // Счетчик до лета
+        function countdownTimer() {
+            const now = new Date();
+            const targetDate = new Date(now.getFullYear(), 5, 1); // Июнь - месяц номер 5
+            if (now >= targetDate) {
+                targetDate.setFullYear(targetDate.getFullYear() + 1);
+            }
+            const timeDifference = targetDate - now;
+
+            const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeDifference % (1000 * 60 * 60)) / (1000 * 60));
+
+            document.getElementById('countdown').innerHTML = `
+                <span>${days} дн. ${hours} ч. ${minutes} мин.</span>
+            `;
+        }
+        setInterval(countdownTimer, 1000);
+        countdownTimer();
+
+        // Логика формы входа
+        function toggleLoginForm(event) {
+            event.stopPropagation();
+            const loginOverlay = document.getElementById('loginOverlay');
+            loginOverlay.classList.toggle('active');
+        }
+
+        function hideLoginForm() {
+            document.getElementById('loginOverlay').classList.remove('active');
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const email = document.getElementById('emailLogin').value;
+            const password = document.getElementById('passwordLogin').value;
+
+            if (email.includes('@') && password.length >= 6) {
+                // Сохраняем email и пароль в cookies
+                setCookie('userEmail', email, 7);
+                setCookie('userPassword', password, 7);
+
+                // Показываем уведомление
+                showCyberAlert(`⚡ Добро пожаловать, ${email}! ⚡`);
+
+                // Скрываем форму входа
+                hideLoginForm();
+                this.reset();
+            } else {
+                showCyberAlert('❌ Неверный email или пароль!');
+            }
+        });
+
+        // Закрытие формы при клике вне её области
+        document.getElementById('loginOverlay').addEventListener('click', function (e) {
+            if (e.target === this) hideLoginForm();
+        });
+
+        // Обработчики для кнопок формы
+        document.querySelector('.sign-in-button').addEventListener('click', function (e) {
+            const savedEmail = getCookie('userEmail');
+            if (savedEmail) {
+                showCyberAlert(`🎮 Вы уже вошли как: ${savedEmail}`, 3000);
+            } else {
+                toggleLoginForm(e); // Открываем форму входа
+            }
+        });
+
+        // Закрытие мобильного меню при клике на ссылку
+        document.querySelectorAll('.menu-item a').forEach(link => {
+            link.addEventListener('click', () => {
+                document.querySelector('.menu-items').classList.remove('active');
+                document.getElementById('mobile-menu').classList.remove('active');
+            });
+        });
+
+        // Функции для работы с cookies
+        function setCookie(name, value, days) {
+            const date = new Date();
+            date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+            const expires = "expires=" + date.toUTCString();
+            document.cookie = name + "=" + encodeURIComponent(value) + ";" + expires + ";path=/";
+        }
+
+        function getCookie(name) {
+            const cookieName = name + "=";
+            const decodedCookie = decodeURIComponent(document.cookie);
+            const cookieArray = decodedCookie.split(';');
+            for (let i = 0; i < cookieArray.length; i++) {
+                let cookie = cookieArray[i].trim();
+                if (cookie.indexOf(cookieName) === 0) {
+                    return decodeURIComponent(cookie.substring(cookieName.length, cookie.length));
+                }
+            }
+            return null;
+        }
+
+        function deleteCookie(name) {
+            document.cookie = name + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        }
+
+        // Функция для показа кастомного уведомления
+        function showCyberAlert(message, duration = 3000) {
+            const cyberAlert = document.createElement('div');
+            cyberAlert.className = 'cyber-alert neon-text';
+            cyberAlert.textContent = message;
+            document.body.appendChild(cyberAlert);
+            setTimeout(() => {
+                cyberAlert.remove();
+            }, duration);
+        }
+
+        // Проверка cookies при загрузке страницы
+        window.addEventListener('load', () => {
+            const savedEmail = getCookie('userEmail');
+            const savedPassword = getCookie('userPassword');
+
+            if (savedEmail && savedPassword) {
+                // Автоматически "входим" пользователя
+                showCyberAlert(`🔥 С возвращением, ${savedEmail}! 🔥`, 5000);
+            }
+        });
+
+        // Обработчик для кнопки закрыть
+        document.getElementById('closeLoginForm').addEventListener('click', function () {
+            hideLoginForm();
+        });
+
+
+        //matrix//
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const drops = Array(Math.floor(canvas.width / 20)).fill(0);
+
+function draw() {
+    ctx.fillStyle = 'rgba(10, 10, 18, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = '#0F0';
+    ctx.font = '16px monospace';
+
+    drops.forEach((y, i) => {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(char, i * 20, y);
+        drops[i] = y > canvas.height || Math.random() > 0.95 ? 0 : y + 20;
+    });
+}
+
+setInterval(draw, 50);
+
+    </script>
+</body>
+</html>

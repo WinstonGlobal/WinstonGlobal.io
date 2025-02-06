@@ -1,0 +1,856 @@
+:root {
+    --neon-blue: #00f3ff;
+    --neon-pink: #ff00ff;
+    --dark-bg: #0a0a12;
+    --cyber-gradient: linear-gradient(45deg, #ff00ff, #00f3ff);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background: var(--dark-bg);
+    font-family: 'Orbitron', sans-serif;
+    color: white;
+    overflow-x: hidden;
+    position: relative;
+   padding-top: 60px; /* Отступ для body, чтобы контент не перекрывался меню */
+    
+}
+
+/* Неоновый заголовок */
+.neon-text {
+    text-shadow: 0 0 10px var(--neon-blue),
+                 0 0 20px var(--neon-blue),
+                 0 0 30px var(--neon-pink),
+                 0 0 40px var(--neon-pink);
+    animation: neonGlow 1.5s ease-in-out infinite alternate;
+    font-family: 'Orbitron', sans-serif;
+    color: #ff00ff;
+}
+
+/* Главное меню */
+.cyber-menu {
+    background: rgba(10, 10, 18, 0.);
+    backdrop-filter: blur(3px);
+    border-bottom: 2px solid var(--neon-pink);
+    padding: 1rem; /* Унифицированный отступ */
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 20px rgba(255, 0, 255, 0.3);
+}
+.cyber-menu.hidden {
+    top: -100px; /* Полностью скрываем меню */
+    transition: top 0.3s ease;
+}
+
+/* Стили для кнопки меню */
+.menu-toggle {
+    display: none; /* По умолчанию скрываем */
+    cursor: pointer;
+    padding: 15px;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1001;
+    background: rgba(10, 10, 18, 0.9);
+    border: 2px solid var(--neon-blue);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+.menu-toggle:hover {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 20px var(--neon-pink);
+}
+
+/* Стили для полосок гамбургера */
+.menu-toggle .bar {
+    width: 25px;
+    height: 3px;
+    background-color: var(--neon-blue);
+    margin: 4px 0;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+/* Анимация при открытии меню */
+.menu-toggle.active .bar:nth-child(1) {
+    transform: translateY(8px) rotate(45deg);
+    background-color: var(--neon-pink);
+}
+
+.menu-toggle.active .bar:nth-child(2) {
+    opacity: 0;
+}
+
+.menu-toggle.active .bar:nth-child(3) {
+    transform: translateY(-8px) rotate(-45deg);
+    background-color: var(--neon-pink);
+}
+
+
+
+.menu-items {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+
+.menu-item {
+    position: relative;
+}
+
+.menu-item a {
+    color: var(--neon-blue);
+    text-decoration: none;
+    font-size: 1.2rem; /* Унифицированный размер шрифта */
+    font-family: 'Orbitron', sans-serif;
+    padding: 0.5rem 1rem; /* Унифицированные отступы */
+    transition: all 0.3s ease;
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+.menu-item a::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--neon-pink);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.menu-item a:hover {
+    color: var(--neon-pink);
+    text-shadow: 0 0 10px var(--neon-pink);
+}
+
+.menu-item button.sign-in-button {
+    background: var(--neon-blue);
+    border: none;
+    padding: 0.5rem 1rem;
+    color: black;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.menu-item button.sign-in-button:hover {
+    background: var(--neon-pink);
+}
+
+/* Стили для кастомного уведомления */
+.cyber-alert {
+    display: block; /* Измените на block */
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(10, 10, 18, 0.95);
+    border: 2px solid var(--neon-pink);
+    border-radius: 10px;
+    padding: 1.5rem;
+    color: var(--neon-blue);
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0 0 30px var(--neon-pink);
+    z-index: 9999;
+    animation: neonGlow 1.5s ease-in-out infinite alternate;
+}
+
+/* Бегущая строка */
+.cyber-ticker {
+    background: var(--cyber-gradient);
+    padding: 1rem;
+    margin: 60px 0 2rem 0;
+    transform: skew(-20deg);
+    overflow: hidden;
+}
+
+.ticker-content {
+    display: inline-block;
+    white-space: nowrap;
+    animation: tickerScroll 20s linear infinite;
+}
+
+/* Анимации */
+@keyframes neonGlow {
+    from {
+        text-shadow: 0 0 5px var(--neon-blue);
+    }
+    to {
+        text-shadow: 0 0 20px var(--neon-blue),
+                     0 0 30px var(--neon-pink);
+    }
+}
+
+@keyframes hologram {
+    0% { opacity: 0.5; transform: translateY(-10px); }
+    50% { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0.5; transform: translateY(10px); }
+}
+
+@keyframes tickerScroll {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: flex; /* Показываем кнопку */
+    }
+
+    .menu-items {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: rgba(10, 10, 18, 0.95);
+        backdrop-filter: blur(10px);
+        border-bottom: 3px solid var(--neon-pink);
+        transform: translateX(-100%);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .menu-items.active {
+        display: flex;
+        transform: translateX(0);
+    }
+
+    .menu-item {
+        width: 100%;
+        text-align: center;
+    }
+
+    .menu-item a {
+        padding: 1rem;
+    }
+
+    .cyber-ticker {
+        margin-top: 100px;
+    }
+}
+
+#topButton {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: var(--neon-pink);
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    z-index: 1001;
+    display: none;
+    color: #000;
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0 0 10px var(--neon-pink);
+}
+
+#topButton:hover {
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: 0 0 20px var(--neon-blue);
+}
+
+/* Фильтры */
+.filter-container {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+}
+
+.filter-button {
+    background: rgba(10, 10, 18, 0.9);
+    border: 2px solid var(--neon-blue);
+    border-radius: 8px;
+    padding: 1rem;
+    margin: 0 0.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #ff00ff;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+}
+
+.filter-button i {
+    margin-right: 0.5rem;
+}
+
+.filter-button:hover {
+    background: var(--neon-blue);
+    color: white;
+    text-shadow: 0 0 15px var(--neon-blue);
+}
+
+.links-horizontal {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 1rem 0;
+}
+
+.links-horizontal a {
+    margin: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(10, 10, 18, 0.9);
+    border: 2px solid var(--neon-blue);
+    border-radius: 8px;
+    color: #ff00ff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.links-horizontal a:hover {
+    background: var(--neon-blue);
+    color: white;
+    text-shadow: 0 0 15px var(--neon-blue);
+}
+
+.countdown-container {
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.countdown-container span {
+    font-size: 1.5rem;
+    text-shadow: 0 0 10px var(--neon-blue);
+}
+
+/* Стилизация формы */
+.styled-form {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: rgba(10, 10, 18, 0.59);
+    border: 2px solid var(--neon-blue);
+    border-radius: 15px;
+    box-shadow: 0 0 30px var(--neon-pink);
+}
+
+.styled-form label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+    color: #ff00ff;
+}
+
+.styled-form input,
+.styled-form textarea {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--neon-blue);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+}
+
+.styled-form input:focus,
+.styled-form textarea:focus {
+    outline: none;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+.styled-form button {
+    width: 100%;
+    padding: 1rem;
+    background: var(--neon-blue);
+    border: none;
+    border-radius: 5px;
+    color: black;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.styled-form button:hover {
+    background: var(--neon-pink);
+}
+
+/* Секции с ховер-эффектами */
+.cyber-card {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px solid var(--neon-pink);
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem auto; /* Отступы сверху и снизу */
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    width: 95%; /* Ширина карточки */
+    max-width: none; /* Максимальная ширина */
+    box-shadow: 0 0 20px var(--neon-pink); /* Увеличим тень */
+    backdrop-filter: blur(3px);
+}
+
+.cyber-card img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+}
+
+.cyber-card:hover {
+    transform: scale(1.02);
+    box-shadow: 0 0 40px var(--neon-pink); /* Увеличим тень при наведении */
+}
+
+/* Логин форма */
+.login-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1002;
+    justify-content: center;
+    align-items: center;
+    transition: 0.3s all ease-in-out;
+}
+
+.login-overlay.active {
+    display: flex;
+}
+
+.login-form-container {
+    background: rgba(10, 10, 18, 0.95);
+    backdrop-filter: blur(10px);
+    padding: 2rem;
+    border: 2px solid var(--neon-blue);
+    border-radius: 15px;
+    box-shadow: 0 0 30px var(--neon-pink);
+    width: 300px;
+    max-width: 100%;
+}
+
+.login-form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.login-form-container label {
+    color: #ff00ff;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+.login-form-container input {
+    width: 100%;
+    padding: 0.5rem;
+    margin-bottom: 1rem;
+    border: 1px solid var(--neon-blue);
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+}
+
+.login-form-container input:focus {
+    outline: none;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+.login-form-container button {
+    background: var(--neon-blue);
+    border: none;
+    padding: 1rem;
+    color: #000;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+.login-form-container button:hover {
+    background: var(--neon-pink);
+    color: #000;
+    box-shadow: 0 0 20px var(--neon-pink);
+}
+
+/* Центрирование текста на странице "Обо мне" */
+.about-section {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; /* Высота секции */
+}
+
+.centered-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.centered-text {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+.centered-list {
+    list-style: none;
+    padding: 0;
+    margin: 0 auto;
+    max-width: 600px;
+    text-align: center;
+}
+
+.centered-list li {
+    font-size: 1.2rem;
+    margin: 0.5rem 0;
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+/* Стили для страницы "Контакты" */
+.contact-section {
+    text-align: center;
+}
+
+.contact-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+/* Стили для страницы "Игра" */
+.game-section {
+    text-align: center;
+}
+
+.game-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.game-section p {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.game-section input[type="text"] {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 1rem 0;
+    border: 2px solid var(--neon-blue);
+    border-radius: 5px;
+    background: rgba(10, 10, 18, 0.9);
+    color: var(--neon-blue);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    outline: none;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+.game-section input[type="text"]:focus {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 20px var(--neon-pink);
+}
+
+/* Общие стили для кнопок */
+.game-section button,
+.game-container button {
+    background: var(--neon-blue);
+    border: none;
+    padding: 0.75rem 1.5rem;
+    color: #000;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    font-family: 'Orbitron', sans-serif;
+    margin: 0.5rem;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+.game-section button:hover,
+.game-container button:hover {
+    background: var(--neon-pink);
+    color: #000;
+    box-shadow: 0 0 20px var(--neon-pink);
+}
+
+/* Индивидуальные стили для кнопок */
+.game-container button:first-of-type {
+    background: var(--neon-pink);
+    box-shadow: 0 0 10px var(--neon-pink);
+}
+
+.game-container button:first-of-type:hover {
+    background: var(--neon-blue);
+    box-shadow: 0 0 20px var(--neon-blue);
+}
+
+.game-container button:last-of-type {
+    background: rgba(10, 10, 18, 0.9);
+    border: 2px solid var(--neon-blue);
+    color: var(--neon-blue);
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+.game-container button:last-of-type:hover {
+    background: var(--neon-blue);
+    color: #000;
+    box-shadow: 0 0 20px var(--neon-blue);
+}
+
+
+/* Стили для текста */
+.game-container p {
+    color: var(--neon-blue);
+    font-size: 1.2rem;
+    margin: 1rem 0;
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+#result {
+    color: var(--neon-pink);
+    font-size: 1.3rem;
+    text-shadow: 0 0 10px var(--neon-pink);
+}
+
+#hint {
+    color: var(--neon-blue);
+    font-style: italic;
+    text-shadow: 0 0 5px var(--neon-blue);
+}
+
+#timer {
+    color: var(--neon-pink);
+    font-size: 1.4rem;
+    text-shadow: 0 0 10px var(--neon-pink);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .game-container button {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+    }
+
+    .game-section p {
+        font-size: 1.2rem;
+    }
+}
+/* Стили для текста "Выберите уровень сложности" */
+.difficulty-container label {
+    display: block;
+    font-size: 1.4rem;
+    color: var(--neon-blue);
+    text-shadow: 0 0 5px var(--neon-blue);
+    margin-bottom: 0.5rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Стили для выпадающего списка */
+#difficulty {
+    width: 50%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 2px solid var(--neon-blue);
+    border-radius: 5px;
+    background: rgba(10, 10, 18, 0.9);
+    color: var(--neon-blue);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    outline: none;
+    box-shadow: 0 0 10px var(--neon-blue);
+    cursor: pointer;
+}
+
+#difficulty:focus {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 20px var(--neon-pink);
+}
+
+/* Стили для опций в выпадающем списке */
+#difficulty option {
+    background: rgba(10, 10, 18, 0.9);
+    color: var(--neon-blue);
+}
+
+/* Стили для текста "Введите код" */
+.code-input-container label {
+    display: block;
+    font-size: 1.4rem;
+    color: var(--neon-blue);
+    text-shadow: 0 0 5px var(--neon-blue);
+    margin-bottom: 0.5rem;
+    font-family: 'Orbitron', sans-serif;
+}
+
+/* Стили для поля ввода кода */
+#codeInput {
+    width: 50%;
+    padding: 0.75rem;
+    margin-bottom: 1rem;
+    border: 2px solid var(--neon-blue);
+    border-radius: 5px;
+    background: rgba(10, 10, 18, 0.9);
+    color: var(--neon-blue);
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.2rem;
+    outline: none;
+    box-shadow: 0 0 10px var(--neon-blue);
+}
+
+#codeInput:focus {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 20px var(--neon-pink);
+}
+
+/* Плейсхолдер для поля ввода */
+#codeInput::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+    font-style: italic;
+}
+
+  /* Исправленные стили для карточки */
+    .cyber-card {
+        perspective: 1000px;
+        cursor: pointer;
+        position: relative; /* Добавляем относительное позиционирование */
+        min-height: auto !important; /* Убираем фиксированную высоту */
+    }
+
+    .card-inner {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        transition: transform 0.8s;
+        transform-style: preserve-3d;
+    }
+
+    .cyber-card.flipped .card-inner {
+        transform: rotateY(180deg);
+    }
+
+    .card-front,
+    .card-back {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+        top: 0;
+        left: 0;
+    }
+
+    .card-front {
+        position: relative; /* Возвращаем нормальный поток для лицевой стороны */
+        transform: none !important;
+        backface-visibility: visible;
+    }
+
+    .card-back {
+        transform: rotateY(180deg);
+        background: rgba(10, 10, 18, 0.95);
+        padding: 2rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        border: 2px solid var(--neon-pink);
+        border-radius: 15px;
+    }
+
+    .card-back::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('https://cm.author.today/content/2023/03/23/c1e8a23ebd154fcaa0414bf91bfb9246.jpg');
+        background-size: cover;
+        background-position: center;
+        transform: scaleX(-1);
+        opacity: 0.2;
+        z-index: -1;
+        filter: grayscale(100%) brightness(0.3);
+    }
+
+
+/*terminal game 2*/
+
+    #terminal {
+        margin: 2rem auto;
+        max-width: 800px;
+    }
+    
+    .terminal-output {
+        height: 300px;
+        overflow-y: auto;
+        background: rgba(0,0,0,0.8);
+        padding: 1rem;
+        border: 1px solid var(--neon-blue);
+        margin-bottom: 1rem;
+        font-family: 'Courier New', monospace;
+    }
+    
+    .input-line {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    #commandInput {
+        flex-grow: 1;
+        background: transparent;
+        border: none;
+        border-bottom: 2px solid var(--neon-pink);
+        color: var(--neon-blue);
+        font-family: 'Courier New', monospace;
+        padding: 0.5rem;
+        outline: none;
+    }
+    
+    #commandInput:focus {
+        border-color: var(--neon-blue);
+    }
+    
+/*matrix*/    
+
+#matrix {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    opacity: 0.8;
+}

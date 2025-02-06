@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Взлом терминала</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&family=Roboto+Mono:wght@300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Навигационное меню -->
+    <nav class="cyber-menu" id="navbar">
+        <div class="menu-toggle" id="mobile-menu">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+        <ul class="menu-items">
+            <li class="menu-item neon-text"><a href="index.html">Главная</a></li>
+            <li class="menu-item neon-text"><a href="about.html">Обо мне</a></li>
+            <li class="menu-item neon-text"><a href="contacts.html">Контакты</a></li>
+            <li class="menu-item neon-text">Взлом терминала</li>
+        </ul>
+    </nav>
+
+    <!-- Основной контент -->
+    <main class="cyber-grid">
+        <section class="cyber-card">
+    <h2 class="neon-text centered-title">Взлом терминала</h2>
+    <p class="story-text">
+        Вы — хакер, пытающийся проникнуть в систему. Ваша задача — ввести правильный код доступа до того, как время истечет.
+    </p>
+    <div class="difficulty-container">
+        <label for="difficulty">Выберите уровень сложности:</label>
+        <select id="difficulty">
+            <option value="easy">Легкий</option>
+            <option value="medium">Средний</option>
+            <option value="hard">Сложный</option>
+        </select>
+    </div>
+    <div class="code-input-container">
+        <label for="codeInput">Введите код:</label>
+        <input type="text" id="codeInput" placeholder="Введите код...">
+    </div>
+    <div class="game-container">
+        <p id="timer">Осталось времени: 30 секунд</p>
+        <p id="hint">Подсказка: Попробуйте ввести '1234' для начала.</p>
+        <button onclick="startGame()">Начать игру</button>
+        <button onclick="hackTerminal()">Взломать</button>
+        <button onclick="requestHint()">Запросить подсказку</button>
+        <p id="result"></p>
+    </div>
+    <h2 class="neon-text centered-title">Terminal - game</h2>
+    <div class="cyber-card" id="terminal">    
+        <div class="terminal-output"></div>
+        <div class="input-line">
+            <span class="prompt neon-text">>_</span>
+            <input type="text" id="commandInput" autocomplete="off">
+        </div>
+    </div>
+    
+    <img src="https://sun9-9.userapi.com/impf/c851324/v851324653/1d7c91/csYYvtbA4uE.jpg?size=2560x1483&quality=96&sign=b5318de3cd819a7bc2bacc3f3837c94a&type=album" 
+         alt="Game Image" 
+         style="width:100%; border-radius:10px; margin:1rem 0;">
+</section>
+
+    </main>
+    <button onclick="scrollToTop()" id="topButton">Наверх</button>
+   <canvas id="matrix"></canvas>   <!-- matrix -->
+    <script>
+        let lastScrollTop = 0;
+        const navbar = document.getElementById('navbar');
+        const topButton = document.getElementById('topButton');
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        window.addEventListener('scroll', () => {
+            const st = window.pageYOffset || document.documentElement.scrollTop;
+            if (st > lastScrollTop){
+                navbar.style.top = '-50px'; // Прячем меню при прокрутке вниз
+                topButton.style.display = 'block'; // Показываем кнопку наверх
+            } else {
+                navbar.style.top = '0'; // Показываем меню при прокрутке вверх
+                if (st === 0) {
+                    topButton.style.display = 'none'; // Прячем кнопку наверх, если на вершине
+                } else {
+                    topButton.style.display = 'block'; // Показываем кнопку наверх при скролле
+                }
+            }
+            lastScrollTop = st <= 0 ? 0 : st; // Для мобильных устройств
+        });
+
+        let difficulty = 'easy';
+        let timeLimit = 30;
+        let hintUsed = false;
+        let timerInterval;
+
+        function startGame() {
+            difficulty = document.getElementById('difficulty').value;
+            timeLimit = (difficulty === 'easy') ? 30 : (difficulty === 'medium') ? 20 : 10;
+            document.getElementById('timer').textContent = `Осталось времени: ${timeLimit} секунд`;
+            document.getElementById('result').textContent = '';
+            document.getElementById('codeInput').value = '';
+            document.getElementById('hint').textContent = 'Подсказка: Попробуйте ввести правильный код.';
+            generateCode();
+            clearInterval(timerInterval);
+            timerInterval = startTimer();
+            hintUsed = false;
+        }
+
+        function generateCode() {
+            const codeLength = (difficulty === 'easy') ? 4 : (difficulty === 'medium') ? 6 : 8;
+            let code = '';
+            for (let i = 0; i < codeLength; i++) {
+                code += Math.floor(Math.random() * 10);
+            }
+            localStorage.setItem('correctCode', code);
+        }
+
+        function startTimer() {
+            let timeLeft = timeLimit;
+            const timerInterval = setInterval(() => {
+                timeLeft--;
+                document.getElementById('timer').textContent = `Осталось времени: ${timeLeft} секунд`;
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById('result').textContent = 'Время вышло! Вы проиграли.';
+                }
+            }, 1000);
+
+            return timerInterval;
+        }
+
+        function hackTerminal() {
+            const codeInput = document.getElementById('codeInput').value;
+            const correctCode = localStorage.getItem('correctCode');
+            if (codeInput === correctCode) {
+                document.getElementById('result').textContent = 'Терминал взломан!';
+                clearInterval(timerInterval);
+            } else {
+                document.getElementById('result').textContent = 'Неверный код. Попробуйте снова.';
+            }
+        }
+
+        function requestHint() {
+            if (!hintUsed) {
+                const correctCode = localStorage.getItem('correctCode');
+                const hint = correctCode.slice(0, Math.ceil(correctCode.length / 2));
+                document.getElementById('hint').textContent = `Подсказка: Первые символы кода - ${hint}`;
+                hintUsed = true;
+            } else {
+                document.getElementById('hint').textContent = 'Подсказка уже использована!';
+            }
+        }
+
+        // Открытие и закрытие бургер-меню
+        const mobileMenu = document.getElementById('mobile-menu');
+        const menuItems = document.querySelector('.menu-items');
+        mobileMenu.addEventListener('click', () => {
+            menuItems.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+        });
+
+
+        //terminal
+        const commands = {
+    help: () => `<div class="neon-text">> Доступные команды:</div>
+               <div>• help - показать помощь</div>
+               <div>• scan - начать сканирование</div>
+               <div>• decrypt - взлом системы</div>`,
+    
+    scan: () => {
+        let output = '';
+        for(let i = 0; i < 5; i++) {
+            output += `<div>Сканирование сектора ${i+1}... [████${'█'.repeat(i)}]</div>`;
+        }
+        return output + '<div class="neon-text">Сканирование завершено!</div>';
+    },
+    
+    decrypt: () => {
+        const code = Array.from({length: 16}, () => 
+            Math.floor(Math.random()*16).toString(16)).join('');
+        return `<div class="neon-text">Инициализация взлома...</div>
+              <div style="color:#0F0">${code}</div>
+              <div>Введите код для продолжения:</div>`;
+    }
+};
+
+const terminalOutput = document.querySelector('.terminal-output');
+const commandInput = document.getElementById('commandInput');
+
+commandInput.addEventListener('keypress', (e) => {
+    if(e.key === 'Enter') {
+        const cmd = commandInput.value.trim().toLowerCase();
+        commandInput.value = '';
+        
+        terminalOutput.innerHTML += `<div>> ${cmd}</div>`;
+        
+        if(commands[cmd]) {
+            terminalOutput.innerHTML += commands[cmd]();
+        } else {
+            terminalOutput.innerHTML += `<div class="neon-text">Ошибка: неизвестная команда</div>`;
+        }
+        
+        terminalOutput.scrollTop = terminalOutput.scrollHeight;
+    }
+});
+     //matrix//
+     const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+const chars = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッンABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+const drops = Array(Math.floor(canvas.width / 20)).fill(0);
+
+function draw() {
+    ctx.fillStyle = 'rgba(10, 10, 18, 0.05)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    
+    ctx.fillStyle = '#0F0';
+    ctx.font = '18px monospace';
+
+    drops.forEach((y, i) => {
+        const char = chars[Math.floor(Math.random() * chars.length)];
+        ctx.fillText(char, i * 20, y);
+        drops[i] = y > canvas.height || Math.random() > 0.95 ? 0 : y + 20;
+    });
+}
+
+setInterval(draw, 50);
+    </script>
+</body>
+</html>
